@@ -1,6 +1,8 @@
-### About main.go
+### About velo.go
 
 The sensitive configuration data is stored in `config.json`.
+
+Rename the config.json.sample to config.json, and update the data.
 
 #### config.json sample
 
