@@ -13,5 +13,13 @@
 # Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
 .glide/
 
+# Gogland .idea folder
+.idea/
+
 # Custom config files
 config.json
+config.test.json
+config.prod.json
+
+# OSX crap
+.DS_Store
