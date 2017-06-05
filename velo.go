@@ -43,17 +43,17 @@ func main() {
 		log.Fatal(err)
 	}
 
-	_host := configuration.Host
-	_db := configuration.Database
-	_username := configuration.Username
-	_password := configuration.Password
-	_url := configuration.Url
+	host := configuration.Host
+	db := configuration.Database
+	username := configuration.Username
+	password := configuration.Password
+	url := configuration.Url
 
 	for {
 		fmt.Println(time.Now())
 
 		// GET request
-		resp, err := resty.R().Get(_url)
+		resp, err := resty.R().Get(url)
 		if err != nil {
 			fmt.Println("Error GET: ", err)
 			return
@@ -72,9 +72,9 @@ func main() {
 		for idx := range Stations {
 			// Create a new HTTPClient
 			c, err := client.NewHTTPClient(client.HTTPConfig{
-				Addr:     _host,
-				Username: _username,
-				Password: _password,
+				Addr:     host,
+				Username: username,
+				Password: password,
 			})
 			if err != nil {
 				log.Fatal(err)
@@ -82,7 +82,7 @@ func main() {
 
 			// Create a new point batch
 			bp, err := client.NewBatchPoints(client.BatchPointsConfig{
-				Database:  _db,
+				Database:  db,
 				Precision: "s",
 			})
 			if err != nil {
