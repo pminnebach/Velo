@@ -1,37 +1,23 @@
 ### About velo.go
 
-The sensitive configuration data is stored in `config.json`.
-
-Rename the config.json.sample to config.json, and update the data.
-
-#### config.json sample
-
-```json
-{
-  "Host"      : "",
-  "Database"      : "",
-  "Username"      : "",
-  "Password"      : "",
-  "Url" 	  : ""
-}
-```
-
-`Host` Link to the InfluxDB instance. eg: `http://link.to.influxdb:8086`
-
-`Database` Name of the database as configured in InfluxDB
-
-`Username` & `password` to connect to the InfluxDB database
-
-`Url` Link to the public availability_map of Velo Antwerpen
+This app downloads the bike availability statistics from the velo availability_map and pushes it to an InfluxDB server.
 
 ### Docker
 
-#### Build docker images
+#### Build docker image
 ```
-docker build -t velo:latest .
+docker build -t velo .
 ```
 
 #### Run docker image
+Substitute the environment variables with your own
 ```
-docker run -d velo
+ docker run -d \
+    --name=velo
+    -e "INFLUXDB_HOST=http://localhost:8086" \
+    -e "INFLUXDB_DATABASE=test" \
+    -e "INFLUXDB_USERNAME=root" \
+    -e "INFLUXDB_PASSWORD=root" \
+    -e "VELO_URL=https://..." \
+    velo
 ```

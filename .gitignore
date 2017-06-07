@@ -17,9 +17,6 @@
 .idea/
 
 # Custom config files
-config.json
-config.test.json
-config.prod.json
 
 # OSX crap
 .DS_Store

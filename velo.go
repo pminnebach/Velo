@@ -5,10 +5,10 @@ import (
 	"github.com/go-resty/resty"
 	"github.com/influxdata/influxdb/client/v2"
 	"github.com/json-iterator/go"
-	"github.com/tkanos/gonfig"
 	"log"
 	"strconv"
 	"time"
+	"os"
 )
 
 type Station struct {
@@ -26,34 +26,28 @@ type Station struct {
 	Name           string `json:"name"`
 }
 
-type Configuration struct {
-	Host     string
-	Database string
-	Username string
-	Password string
-	Url      string
-}
-
 func main() {
 
-	configuration := Configuration{}
-	err := gonfig.GetConf("config.json", &configuration)
-	if err != nil {
-		fmt.Println("Error gonfig: ", err)
-		log.Fatal(err)
-	}
+	h := os.Getenv("INFLUXDB_HOST")
+	fmt.Printf("INFLUXDB_HOST: %s\n", h)
 
-	host := configuration.Host
-	db := configuration.Database
-	username := configuration.Username
-	password := configuration.Password
-	url := configuration.Url
+	d := os.Getenv("INFLUXDB_DATABASE")
+	fmt.Printf("INFLUXDB_DATABASE: %s\n", d)
+
+	u := os.Getenv("INFLUXDB_USERNAME")
+	fmt.Printf("INFLUXDB_USERNAME: %s\n", u)
+
+	p := os.Getenv("INFLUXDB_PASSWORD")
+	fmt.Printf("INFLUXDB_PASSWORD: %s\n", p)
+
+	v := os.Getenv("VELO_URL")
+	fmt.Printf("VELO_URL: %s\n", v)
 
 	for {
 		fmt.Println(time.Now())
 
 		// GET request
-		resp, err := resty.R().Get(url)
+		resp, err := resty.R().Get(v)
 		if err != nil {
 			fmt.Println("Error GET: ", err)
 			return
@@ -72,9 +66,9 @@ func main() {
 		for idx := range Stations {
 			// Create a new HTTPClient
 			c, err := client.NewHTTPClient(client.HTTPConfig{
-				Addr:     host,
-				Username: username,
-				Password: password,
+				Addr:     h,
+				Username: u,
+				Password: p,
 			})
 			if err != nil {
 				log.Fatal(err)
@@ -82,7 +76,7 @@ func main() {
 
 			// Create a new point batch
 			bp, err := client.NewBatchPoints(client.BatchPointsConfig{
-				Database:  db,
+				Database:  d,
 				Precision: "s",
 			})
 			if err != nil {
